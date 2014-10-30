@@ -316,7 +316,7 @@ class VerifyCtx:
             proof = arg[4:]
             try:
                 proofctx, fvmap, hypmap = self.setup_proof(label, fv, hyps, conc)
-            except VerifyError, x:
+            except VerifyError as x:
                 msg = 'error in thm ' + label + ': '
                 out.write(msg + '\n')
                 if self.error_handler is not None: self.error_handler(label, x.why)
@@ -353,7 +353,7 @@ class VerifyCtx:
                 proofctx, fvmap, hypmap = self.setup_proof(label, fv, hyps, conc,
                                             dkind, dsig)
                 self.check_proof(proofctx, proof, fvmap, hypmap)
-            except VerifyError, x:
+            except VerifyError as x:
                 out.write('Error in defthm ' + label + ': ' + x.why)
                 if x.stack != None:
                     for i in range(len(x.stack)):
@@ -398,7 +398,7 @@ class VerifyCtx:
             try:
                 self.def_conc_match(conc, remnant, dsig,
                                     t, proofctx, result)
-            except VerifyError, x:
+            except VerifyError as x:
                 x.why = ('The defthm conclusion\n ' + sexp_to_string(conc) +
                          '\nfails to match remnant\n ' +
                          sexp_to_string(remnant) + '\n*** ' + x.why)
@@ -598,7 +598,7 @@ class VerifyCtx:
             #print 'step:', step
             try:
                 self.check_proof_step(hypmap, step, proofctx)
-            except VerifyError, x:
+            except VerifyError as x:
                 x.why += ' [' + sexp_to_string(step) + ']'
                 x.stack = proofctx.stack
                 raise x
@@ -1456,11 +1456,11 @@ def run(urlctx, url, ctx, out):
                 raise SyntaxError('cmd must be atom: %s has type %s' % (cmd, type(cmd)))
             arg = read_sexp(s)
             ctx.do_cmd(cmd, arg, out)
-    except VerifyError, x:
+    except VerifyError as x:
         out.write('Verify error at %s:%d:\n%s' % (url, s.lineno, x.why) + '\n')
         if ctx.error_handler is not None:
             ctx.error_handler('', x.why)
-    except SyntaxError, x:
+    except SyntaxError as x:
         out.write('Syntax error at line %s:%d:\n%s' % (url, s.lineno, str(x)) + '\n')
         if ctx.error_handler is not None:
             ctx.error_handler('', str(x))

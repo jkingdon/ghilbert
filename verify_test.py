@@ -121,9 +121,9 @@ def regression(fn, out):
                     else:
                          try:
                               run_regression(urlctx, cmd[1], verifyctx, out)
-                         except verify.VerifyError, x:
+                         except verify.VerifyError as x:
                               error = "VerifyError: " + x.why
-                         except SyntaxError, x:
+                         except SyntaxError as x:
                               error = "SyntaxError: " + str(x)
                          if error is None and cmd[0] == '!reject':
                               failures += 1
