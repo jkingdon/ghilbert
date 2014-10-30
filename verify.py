@@ -36,6 +36,13 @@ def sexp_to_string_rec(buf, sexp):
             sp_string = ' '
         buf += ')'
 
+# Shim that detects strings or unicode strings on python 2 or 3
+def is_string(obj):
+    try:
+        isinstance(obj, basestring)
+    except NameError:
+        isinstance(obj, str)
+
 class VerifyError(Exception):
     def __init__(self, why, label = None, stack = None):
         self.why = why
@@ -249,7 +256,7 @@ class VerifyCtx:
     # of found variables to their indices in varlist.
     def kind_of(self, exp, varlist, varmap, syms, check_bv_expr = None):
         """ Check that exp is a well-formed expression, and return its kind """
-        if isinstance(exp, basestring):
+        if is_string(exp):
             try:
                 v = syms[exp]
             except KeyError:
@@ -271,7 +278,7 @@ class VerifyCtx:
                   + sexp_to_string(exp) + ' in ' + sexp_to_string(check_bv_expr))
         if len(exp) == 0:
             raise VerifyError("term can't be empty list")
-        if not isinstance(exp[0], basestring):
+        if not is_string(exp[0]):
             raise VerifyError('term must be id, found ' +
                               sexp_to_string(exp[0]))
         try:
@@ -536,7 +543,7 @@ class VerifyCtx:
 
         hypmap = {}
         for i in range(0, len(hyps), 2):
-            if not isinstance(hyps[i], basestring):
+            if not is_string(hyps[i]):
                 raise VerifyError('hyp label must be string')
             if hyps[i] in hypmap:
                 raise VerifyError('Repeated hypothesis label %s' % hyps[1])
@@ -666,7 +673,7 @@ class VerifyCtx:
                 invmap = {}
                 for var, exp in env.iteritems():
                     if syms[var][0] == 'var':
-                        if not isinstance(exp, basestring):
+                        if not is_string(exp):
                             raise VerifyError('expected binding variable for ' +
                                               var + ' but matched ' +
                                               sexp_to_string(exp))
@@ -705,7 +712,7 @@ class VerifyCtx:
             remnant expression <remnant> on the proof stack.
             <conc> and <remnant> are known to be well-formed at this point.
         """
-        if isinstance(conc, basestring):
+        if is_string(conc):
             if conc != remnant:
                 raise VerifyError('Conclusion variable ' + conc +
                                   ' vs. remnant ' + sexp_to_string(remnant))
@@ -1075,7 +1082,7 @@ class ImportCtx(InterfaceCtx):
             Check that the expression is well-formed, satisfying kind and
             binding constraints. Collect the variables used in used_vars.
         """
-        if isinstance(sexp, basestring):
+        if is_string(sexp):
             try:
                 v = self.vars[sexp]
             except KeyError:
