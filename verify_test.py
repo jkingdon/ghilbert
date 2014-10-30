@@ -99,7 +99,7 @@ def regression(fn, out):
 
      urlctx = TestUrlCtx()
      lineno = 0
-     for l in file(fn).xreadlines():
+     for l in open(fn):
           lineno += 1
           if l.startswith('!'):
                cmd = l.split()
