@@ -27,7 +27,7 @@ class TestUrlCtx:
      # additional interface for data-driven tests
      def open_append(self, url):
           self.current_url = url
-          if not self.d.has_key(url):
+          if not url in self.d:
                self.d[url] = ''
      def append_current(self, text):
           self.d[self.current_url] += text

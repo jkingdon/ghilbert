@@ -127,11 +127,11 @@ class VerifyCtx:
         self.run = run
         self.error_handler = error_handler
     def add_sym(self, label, val):
-        if self.syms.has_key(label):
+        if label in self.syms:
             raise VerifyError('Symbol ' + label + ' already defined')
         self.syms[label] = val
     def add_kind(self, kind, val):
-        if self.kinds.has_key(kind):
+        if kind in self.kinds:
             raise VerifyError('Kind ' + kind + ' already defined')
         self.kinds[kind] = val
     def get_kind(self, kind):
@@ -140,7 +140,7 @@ class VerifyCtx:
         except KeyError:
             raise VerifyError('Kind not known: ' + kind)
     def add_term(self, label, kind, argkinds, freemap):
-        if self.terms.has_key(label):
+        if label in self.terms:
             raise VerifyError('Term ' + label + ' already defined')
         #print 'add_term ', label, (kind, argkinds, freemap)
         self.terms[label] = (kind, argkinds, freemap)
@@ -636,7 +636,7 @@ class VerifyCtx:
                                 proofctx.varmap, self.syms)
             #print 'kind of ' + sexp_to_string(step) + ' = ' + kind
             proofctx.mandstack.append(('tvar', kind, step))
-        elif hypmap.has_key(step):
+        elif step in hypmap:
             if len(proofctx.mandstack) != 0:
                 raise VerifyError('hyp expected no mand hyps, got %d' % len(proofctx.mandstack))
             proofctx.stack.append(hypmap[step])
@@ -681,7 +681,7 @@ class VerifyCtx:
                             raise VerifyError('expected binding variable for ' +
                                               var + '; ' + exp +
                                               ' is term variable')
-                        if invmap.has_key(exp):
+                        if exp in invmap:
                             raise VerifyError('binding variables ' + invmap[exp] + ' and ' + var + ' both map to ' + exp)
                         invmap[exp] = var
                     exp_kind = self.kind_of_expression(exp)
@@ -801,7 +801,7 @@ class VerifyCtx:
     # the variables in the template space to expressions in the current proof
     def match(self, templ, exp, env):
         if type(templ) == type('var'):
-            if env.has_key(templ):
+            if templ in env:
                 if exp != env[templ]:
                     # todo: more debug detail
                     raise VerifyError('Unification error')
