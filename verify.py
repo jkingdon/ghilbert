@@ -21,20 +21,20 @@ import array
 
 # for debug printing
 def sexp_to_string(sexp):
-    buf = array.array('c')
+    buf = ''
     sexp_to_string_rec(buf, sexp)
-    return buf.tostring()
+    return buf
 def sexp_to_string_rec(buf, sexp):
     if type(sexp) == type('str'):
-        buf.fromstring(sexp)
+        buf += sexp
     elif type(sexp) == type([]):
-        buf.fromstring('(')
+        buf += '('
         sp_string = ''
         for el in sexp:
-            buf.fromstring(sp_string)
+            buf += sp_string
             sexp_to_string_rec(buf, el)
             sp_string = ' '
-        buf.fromstring(')')
+        buf += ')'
 
 class VerifyError(Exception):
     def __init__(self, why, label = None, stack = None):
