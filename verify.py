@@ -174,7 +174,7 @@ class VerifyCtx:
         # the subterms in which var might occur free accordingly.
         nargs = len(freemap)
         subterms = (1 << nargs) - 1  # bitmap of all argument positions
-        for v in xrange(nargs):
+        for v in range(nargs):
             m = freemap[v]
             if m < 0:
                 continue  # skip non-binding variables
@@ -327,11 +327,11 @@ class VerifyCtx:
                 if proofctx.stack[0] != conc:
                     raise VerifyError('\nwanted ' + sexp_to_string(conc), label,
                                       proofctx.stack)
-            except VerifyError, x:
+            except VerifyError as x:
                 msg = 'error in thm ' + label + ': '
                 out.write(msg + '\n')
                 if x.stack != None:
-                    for i in xrange(len(x.stack)):
+                    for i in range(len(x.stack)):
                         out.write('P' + str(i) + ': ' + sexp_to_string(x.stack[i]) + '\n')
                 if self.error_handler is None or not self.error_handler(label, x.why):
                     raise x
@@ -356,7 +356,7 @@ class VerifyCtx:
             except VerifyError, x:
                 out.write('Error in defthm ' + label + ': ' + x.why)
                 if x.stack != None:
-                    for i in xrange(len(x.stack)):
+                    for i in range(len(x.stack)):
                         out.write('P' + str(i) + ': ' + sexp_to_string(x.stack[i]))
                 raise x
 
@@ -532,10 +532,10 @@ class VerifyCtx:
             # in that case as its proof assumes all binding variables are
             # distinct. A bit ugly.
             tk, ak, fm = t
-            for j in xrange(1, len(fm)):
+            for j in range(1, len(fm)):
                 if fm[j] < 0:
                     continue    # not a binding variable
-                for i in xrange(j):
+                for i in range(j):
                     if fm[i] < 0:
                         continue
                     if ak[i] == ak[j]:
@@ -776,14 +776,14 @@ class VerifyCtx:
         # Also need to construct the freemap for the new term.
         freemap = defterm[2]
         nargs = len(freemap)
-        for i in xrange(nargs):
+        for i in range(nargs):
             bmap = freemap[i]
             if bmap < 0:
                 continue  # skip term variables
             l = []
             # IDEA: make self.freelist() return a bitmap?
             self.freelist(conc[i + 1], remnant, l)
-            for j in xrange(nargs):
+            for j in range(nargs):
                 if conc[j + 1] in l:
                     bmap = bmap | (1 << j)
             freemap[i] = bmap
@@ -857,7 +857,7 @@ def term_common(kindname, sig, freespecs, kinds, terms, vars):
     args = sig[1:]
     nargs = len(args)
     freemap = [-1]*nargs
-    for i in xrange(nargs):
+    for i in range(nargs):
         v = args[i]
         try:
             var = vars[v]
@@ -1121,7 +1121,7 @@ class ImportCtx(InterfaceCtx):
         if len(t[1]) != nargs:
             raise VerifyError('Arity mismatch for term expression %s' %
                               sexp_to_string(sexp))
-        for j in xrange(len(sexp) - 1):
+        for j in range(len(sexp) - 1):
             el = sexp[j + 1]
             argkind = t[1][j]
             binding_var = t[2][j] >= 0
@@ -1252,7 +1252,7 @@ class ExportCtx(InterfaceCtx):
         if prefname != vexp[0]:
             return False
         n = n - 1
-        for i in xrange(n):
+        for i in range(n):
             if not self.export_match(sexp[i + 1], vexp[i + 1], varmap, invmap, vsyms):
                 return False
         return True
