@@ -611,7 +611,7 @@ class VerifyCtx:
         extra = ''
         missing = ''
         for v in fvmap:
-            for A, val in fvmap[v].iteritems():
+            for A, val in fvmap[v].items():
                 if val == 0:
                     extra = extra + (' (%s %s)' % (A, v))
                 elif val is None:
@@ -671,7 +671,7 @@ class VerifyCtx:
                     el = proofctx.stack[sp + i]
                     self.match(hyps[i], el, env)
                 invmap = {}
-                for var, exp in env.iteritems():
+                for var, exp in env.items():
                     if syms[var][0] == 'var':
                         if not is_string(exp):
                             raise VerifyError('expected binding variable for ' +
@@ -1059,13 +1059,13 @@ class InterfaceCtx:
         # import context namespace with a colliding name.
         # Note that we don't add stmt's from the param interface
         # the current import context -- they are not needed.
-        for k, kr in p.mykinds.iteritems():
+        for k, kr in p.mykinds.items():
             kpref = prefix + k
             if kpref in self.kinds:
                 raise VerifyError('Context ' + self.name +
                                   ' already contains a kind ' + kpref)
             self.kinds[kpref] = kr
-        for t, tr in p.myterms.iteritems():
+        for t, tr in p.myterms.items():
             tpref = prefix + t
             if tpref in self.terms:
                 raise VerifyError('Context ' + self.name +
@@ -1421,7 +1421,7 @@ class ExportCtx(InterfaceCtx):
             # Check that the (non)freeness constraints provided in the export
             # context are at least as strong as those in the verify context
 
-            for vvar, d_orig in nonfrees_orig.iteritems():
+            for vvar, d_orig in nonfrees_orig.items():
                 try:
                     d = nonfrees[vvar]
                 except KeyError:
