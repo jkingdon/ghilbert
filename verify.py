@@ -1498,6 +1498,6 @@ if __name__ == '__main__':
         url = 'file://' + fn
     ctx.run(urlctx, url, ctx, sys.stdout)
     if error_counter.count != 0:
-        print 'Number of errors: %d' % error_counter.count
+        print('Number of errors: %d' % error_counter.count)
         sys.exit(1)
 
